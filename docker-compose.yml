@@ -1,0 +1,13 @@
+services:
+  logs-monitor:
+    build: .
+    image: logs-monitor:latest
+    container_name: logs-monitor
+    ports:
+      - "8085:80"
+    restart: always
+
+networks:
+  default:
+    name: global-link
+    external: true

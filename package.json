@@ -1,5 +1,5 @@
 {
-  "name": "api-logs-monitor",
+  "name": "logs-monitor",
   "private": true,
   "version": "0.0.0",
   "type": "module",

@@ -1,1 +1,1 @@
-# API Logs Monitor
+# Logs Monitor
