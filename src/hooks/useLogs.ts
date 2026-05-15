@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import type { LogEntryType } from "../types/Logs";
 import { calculateAverageDuration } from "../utils/calculateAverageDuration";
 // import { logsExample } from "../assets/logsExample";
-import useApi from "../context/ApiContext";
+import { useApi } from "../context/ApiContext";
 
 export interface UseLogsProps {
   pollInterval?: number;
@@ -15,7 +15,6 @@ export const useLogs = ({
   pollInterval,
   limit = 100,
   autoRefresh = true,
-  selectedTab = "All",
 }: UseLogsProps = {}) => {
   const [logs, setLogs] = useState<LogEntryType[]>([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +22,7 @@ export const useLogs = ({
   const [pollTrigger, setPollTrigger] = useState(0);
   const [averageDuration, setAverageDuration] = useState<number | null>(null);
   const { selectedApi } = useApi();
-  const URL = `http://45.128.98.99:3001/logs?limit=${limit}`;
+  const URL = selectedApi && `http://45.128.98.99:3001/logs?limit=${limit}`;
 
   const containsKeyword = (log: LogEntryType, keyword: string) =>
     log.message?.toLowerCase().includes(keyword.toLowerCase());
@@ -72,7 +71,7 @@ export const useLogs = ({
     error,
     pollTrigger,
     refresh: fetchLogs,
-    logs: filteredLogs,
+    logs,
     pingsCount,
     averageDuration,
   };

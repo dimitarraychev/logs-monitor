@@ -21,7 +21,7 @@ const Header = () => {
           { label: "report-api", value: "report-api" },
           { label: "report-cron", value: "report-cron" },
         ]}
-        onChange={(val) => setSelectedApi((prev) => val)}
+        onChange={(val) => setSelectedApi(() => val)}
       />
     </header>
   );
