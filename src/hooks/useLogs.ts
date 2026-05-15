@@ -67,7 +67,7 @@ export const useLogs = ({
         }
       };
     }
-  }, [limit, pollInterval, autoRefresh]);
+  }, [limit, pollInterval, autoRefresh, selectedApi]);
 
   return {
     loading,
