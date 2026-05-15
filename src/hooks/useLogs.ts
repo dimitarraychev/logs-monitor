@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import type { LogEntryType } from "../types/Logs";
 import { calculateAverageDuration } from "../utils/calculateAverageDuration";
 // import { logsExample } from "../assets/logsExample";
+import useApi from "../context/ApiContext";
 
 export interface UseLogsProps {
   pollInterval?: number;
@@ -21,41 +22,12 @@ export const useLogs = ({
   const [error, setError] = useState<string | null>(null);
   const [pollTrigger, setPollTrigger] = useState(0);
   const [averageDuration, setAverageDuration] = useState<number | null>(null);
+  const { selectedApi } = useApi();
+  const URL = `http://45.128.98.99:3001/logs?limit=${limit}`;
 
   const containsKeyword = (log: LogEntryType, keyword: string) =>
     log.message?.toLowerCase().includes(keyword.toLowerCase());
-
   const isPing = (log: LogEntryType) => containsKeyword(log, "ping");
-  const isErrorReport = (log: LogEntryType) =>
-    containsKeyword(log, "error report");
-  const isAccountingReport = (log: LogEntryType) =>
-    containsKeyword(log, "accounting report");
-
-  const filteredLogs = useMemo(() => {
-    if (selectedTab === "All") return logs;
-
-    if (selectedTab === "Game") {
-      return logs.filter(
-        (log) =>
-          !isPing(log) && !isErrorReport(log) && !isAccountingReport(log),
-      );
-    }
-
-    if (selectedTab === "Pings") {
-      return logs.filter((log) => isPing(log));
-    }
-
-    if (selectedTab === "Error Reports") {
-      return logs.filter((log) => isErrorReport(log));
-    }
-
-    if (selectedTab === "Accounting Reports") {
-      return logs.filter((log) => isAccountingReport(log));
-    }
-
-    return logs;
-  }, [logs, selectedTab]);
-
   const pingsCount = useMemo(() => logs.filter(isPing).length, [logs]);
 
   const intervalRef = useRef<number | undefined>(undefined);
@@ -64,7 +36,7 @@ export const useLogs = ({
     // return setLogs(logsExample.logs);
     setLoading(true);
     try {
-      const res = await fetch(`/api/logs?limit=${limit}`);
+      const res = await fetch(URL);
       if (!res.ok) throw new Error(`Failed to fetch logs: ${res.status}`);
       const data = await res.json();
       const fetchedLogs: LogEntryType[] = data.logs || [];
