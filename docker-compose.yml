@@ -7,7 +7,7 @@ services:
     container_name: logs-monitor
     ports:
       - "8085:80"
-      - "9443:443"
+      - "10443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./nginx.crt:/etc/nginx/ssl/nginx.crt:ro

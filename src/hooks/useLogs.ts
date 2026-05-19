@@ -24,8 +24,8 @@ export const useLogs = ({
   const { selectedApi } = useApi();
   const URL =
     selectedApi === "game-api"
-      ? `http://45.128.98.99:3001/logs?limit=${limit}`
-      : `http://45.128.98.99:3002/logs?limit=${limit}`;
+      ? `/game-api/logs?limit=${limit}`
+      : `/report-api/logs?limit=${limit}`;
 
   const containsKeyword = (log: LogEntryType, keyword: string) =>
     log.message?.toLowerCase().includes(keyword.toLowerCase());
